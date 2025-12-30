@@ -1,34 +1,47 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: sans-serif, "poppins";
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
 }
 
+/* Main background container */
 .container {
   width: 100%;
   min-height: 100vh;
   padding: 10px;
   background: linear-gradient(135deg, #153677, #4e085f);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
+
+/* Todo app card */
 .todo-app {
   width: 100%;
-  min-width: 540px;
-  background: #fff;
+  min-width: 280px; /* ✅ minimum width */
+  max-width: 540px; /* ✅ controls large screens */
+  background: #ffffff;
   border-radius: 10px;
-  margin: 100px auto 20px;
+  margin-top: 100px;
   padding: 40px 30px 70px;
 }
+
+/* Heading */
 .todo-app h2 {
   color: #002765;
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
+
+/* Icon image */
 .todo-app img {
   width: 50px;
   margin-left: 10px;
 }
+
+/* Input row */
 .row {
   display: flex;
   align-items: center;
@@ -38,21 +51,133 @@
   padding-left: 20px;
   margin-bottom: 25px;
 }
+
+/* Input field */
 input {
   flex: 1;
   border: none;
   outline: none;
   background: transparent;
-  padding: 10px;
+  padding: 12px;
+  font-size: 16px;
 }
+
+/* Button */
 button {
   border: none;
   outline: none;
-  padding: 16px 50px;
+  padding: 16px 45px;
   background: #ff5945;
-  color: #fff;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   border-radius: 40px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #e94b3c;
+}
+
+#list-container li {
+  list-style: none;
+  font-size: 16px;
+  padding: 14px 50px 14px 55px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  position: relative;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+#list-container li:hover {
+  background: #f3f6ff;
+  transform: translateY(-2px);
+}
+
+/* Circle Icon */
+#list-container li::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  background-image: url("images/unchecked-icon.png");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Checked State */
+#list-container li.checked {
+  text-decoration: line-through;
+  color: #9a9a9a;
+  background: #f0f0f0;
+}
+
+#list-container li.checked::before {
+  background-image: url("images/checked-icon.png");
+}
+
+.task-text {
+  flex: 1;
+}
+
+.edit-btn,
+.delete-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 36px;
+  width: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Edit button */
+.edit-btn {
+  right: 55px;
+  font-size: 18px;
+}
+
+.edit-btn:hover {
+  background: #4caf50;
+  color: #fff;
+}
+
+/* Delete button */
+.delete-btn {
+  right: 12px;
+  font-size: 24px;
+}
+
+.delete-btn:hover {
+  background: #ff4d4d;
+  color: #fff;
+}
+
+/* Mobile optimization */
+@media (max-width: 480px) {
+  .todo-app {
+    padding: 30px 20px 60px;
+    margin-top: 60px;
+  }
+
+  button {
+    padding: 14px 30px;
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 14px;
+  }
 }
