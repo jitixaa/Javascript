@@ -1,21 +1,4 @@
-// DOM Elements
-
-const startScreen = document.getElementById("start-screen");
-const quizScreen = document.getElementById("quiz-screen");
-const resultscreen = document.getElementById("result-screen");
-const startBtn = document.getElementById("start-btn");
-const questionText = document.getElementById("question-text");
-const answerContainer = document.getElementById("answer-container");
-const currentQuestionSpan = document.getElementById("current-question");
-const totalQuestionSpan = document.getElementById("total-question");
-const scoreSpan = document.getElementById("score");
-const finalScore = document.getElementById("final-score");
-const maxScoreSpan = document.getElementById("max-score");
-const resultMessage = document.getElementById("result-message");
-const restartBtn = document.getElementById("restart-btn");
-const progressBar = document.getElementById("progress");
-
-const quizQuestions = [
+const Questions = [
   {
     question: "What is the capital of France?",
     answers: [
@@ -63,24 +46,92 @@ const quizQuestions = [
   },
 ];
 
-// Quiz State Vars
+const questionElement = document.getElementById("question");
+const answerBtn = document.getElementById("answer-buttons");
+const nextBtn = document.getElementById("next-btn");
 
 let currentQuestionIndex = 0;
-let Score = 0;
-let answerDisabled = false;
-
-totalQuestionSpan.textContent = quizQuestions.length;
-maxScoreSpan.textContent = quizQuestions.length;
-
-// Event Listeners
-
-startBtn.addEventListener("click", startQuiz);
-restartBtn.addEventListener("click", restartQuiz);
+let score = 0;
 
 function startQuiz() {
-  console.log("Started Quiz !");
+  currentQuestionIndex = 0;
+  score = 0;
+  nextBtn.innerHTML = "Next";
+  showQuestion();
 }
 
-function restartQuiz() {
-  console.log("again Start Quiz");
+function showQuestion() {
+  resetState();
+
+  let currentQuestion = Questions[currentQuestionIndex];
+  questionElement.innerHTML =
+    currentQuestionIndex + 1 + ". " + currentQuestion.question;
+
+  currentQuestion.answers.forEach((answer) => {
+    const button = document.createElement("button");
+    button.innerHTML = answer.text;
+    button.classList.add("btn");
+    answerBtn.appendChild(button);
+
+    if (answer.correct) {
+      button.dataset.correct = "true";
+    }
+
+    button.addEventListener("click", selectAnswer);
+  });
 }
+
+function resetState() {
+  nextBtn.style.display = "none";
+  while (answerBtn.firstChild) {
+    answerBtn.removeChild(answerBtn.firstChild);
+  }
+}
+
+function selectAnswer(e) {
+  const selectedBtn = e.target;
+  const isCorrect = selectedBtn.dataset.correct === "true";
+
+  if (isCorrect) {
+    selectedBtn.classList.add("correct");
+    score++;
+  } else {
+    selectedBtn.classList.add("incorrect");
+  }
+
+  Array.from(answerBtn.children).forEach((button) => {
+    if (button.dataset.correct === "true") {
+      button.classList.add("correct");
+    }
+    button.disabled = true;
+  });
+
+  nextBtn.style.display = "block";
+}
+
+function showScore() {
+  resetState();
+  questionElement.innerHTML = `You scored ${score} out of ${Questions.length}`;
+  nextBtn.innerHTML = "Play Again";
+  nextBtn.style.display = "block";
+}
+
+function handleNextButton() {
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < Questions.length) {
+    showQuestion();
+  } else {
+    showScore();
+  }
+}
+
+nextBtn.addEventListener("click", () => {
+  if (currentQuestionIndex < Questions.length) {
+    handleNextButton();
+  } else {
+    startQuiz();
+  }
+});
+
+startQuiz();
